@@ -16,33 +16,47 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderSummary orderSummary(List<String> itemList) {
-        boolean isOrange = itemList.contains("Orange");
-        boolean isApple = itemList.contains("Apple");
-//        double priceForOrange = 0;
-//        double priceForApple = 0;
+
         double totalPrice = 0;
 
         double priceForOrange = 0.25;
         double priceForApple = 0.60;
 
-        //find for price from repo
-//        if (isOrange) {
-//            Item orange = repository.findByName("Orange");
-//            priceForOrange = orange.getPrice();
-//        }
-//        if (isApple) {
-//            Item apple = repository.findByName("Apple");
-//            priceForApple = apple.getPrice();
-//        }
 
         long countOfApple = itemList.stream().filter(item -> item.equalsIgnoreCase("Apple")).count();
         long countOfOrange = itemList.stream().filter(item -> item.equalsIgnoreCase("Orange")).count();
 
 
-        totalPrice =  (countOfApple*priceForApple)+ (countOfOrange*priceForOrange);
+        //with deal
+        double applePriceWithDeal = appleDeal(countOfApple, priceForApple);
+        double orangePriceWithDeal = orangeDeal(countOfOrange, priceForOrange);
 
-        OrderSummary orderSummary = new OrderSummary(itemList,totalPrice);
+        //send this as response when deal available
+        double totalPriceWithDeal = applePriceWithDeal + orangePriceWithDeal;
+
+        OrderSummary orderSummary = new OrderSummary(itemList,totalPriceWithDeal);
 
         return orderSummary;
+    }
+
+    private double appleDeal(long count, double unitPrice) {
+        if (count == 1) {
+            return unitPrice;
+        } else if (count % 2 == 0) {
+            return (count * unitPrice) / 2;
+        } else {
+            return ((count - 1) * unitPrice)/2 + unitPrice;
+        }
+    }
+
+    private double orangeDeal(long count, double unitPrice) {
+        if (count < 3) {
+            return count * unitPrice;
+        } else if (count % 3 == 0) {
+            return ((count/3)*2)*unitPrice;
+        } else {
+            return  ((count/3)*2)*unitPrice + (count%3)*unitPrice;
+        }
+
     }
 }
