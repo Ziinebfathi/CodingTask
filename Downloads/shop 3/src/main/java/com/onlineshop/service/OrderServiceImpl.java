@@ -11,8 +11,7 @@ import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    OrderRepository repository;
+
 
     @Override
     public OrderSummary orderSummary(List<String> itemList) {
