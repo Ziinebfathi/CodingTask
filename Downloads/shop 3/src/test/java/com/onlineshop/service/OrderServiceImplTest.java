@@ -1,19 +1,14 @@
 package com.onlineshop.service;
 
 import com.onlineshop.domain.OrderSummary;
-import com.onlineshop.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {

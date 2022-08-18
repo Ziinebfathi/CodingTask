@@ -1,17 +1,19 @@
 package com.onlineshop.service;
 
-import com.onlineshop.domain.Item;
 import com.onlineshop.domain.OrderSummary;
 import com.onlineshop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
+
+    @Autowired
+    OrderRepository orderRepository;
 
     @Override
     public OrderSummary orderSummary(List<String> itemList) {
@@ -33,10 +35,21 @@ public class OrderServiceImpl implements OrderService {
         //send this as response when deal available
         double totalPriceWithDeal = applePriceWithDeal + orangePriceWithDeal;
 
-        OrderSummary orderSummary = new OrderSummary(itemList,totalPriceWithDeal);
+        OrderSummary orderSummary = new OrderSummary(1l,itemList,totalPriceWithDeal);
 
         return orderSummary;
     }
+
+    @Override
+    public Optional<OrderSummary> getParticularOrder(Long id) {
+          return orderRepository.findById(id);
+    }
+
+    @Override
+    public List<OrderSummary> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
 
     private double appleDeal(long count, double unitPrice) {
         if (count == 1) {
